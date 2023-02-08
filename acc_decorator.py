@@ -40,12 +40,14 @@ def traversePreOrder(node):
         traversePreOrder(child)
 
 def insertDecorations(code, node, offset_lines = 0):
-    insert_string = ""
+    insert_string = "\n"
     if ( node.get_data()[0] != None ):
-        if (len( node.get_children()) == 0 and node.get_level() == 1 ):
-            code.insert(node.get_data()[0] + offset_lines, loop_directives[0 + node.get_level() - 1] + ' VECTOR\n')
-        else:
-            code.insert(node.get_data()[0] + offset_lines, loop_directives[0 + node.get_level() - 1] + '\n')
+        if ( node.get_level() == 1 ):
+            if ( len( node.get_children()) == 0 ):
+                insert_string = " VECTOR PRIVATE() IF(.false.)\n"
+            else:
+                insert_string = " PRIVATE() IF(.false.)\n"
+        code.insert(node.get_data()[0] + offset_lines, loop_directives[0 + node.get_level() - 1] + insert_string)
         offset_lines += 1
 
     for child in node.get_children():
