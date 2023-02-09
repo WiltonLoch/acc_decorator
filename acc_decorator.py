@@ -9,14 +9,14 @@ def insertDecorations(code, node, offset_lines = 0):
                 insert_string = " VECTOR PRIVATE() IF(.false.)\n"
             else:
                 insert_string = " PRIVATE() IF(.false.)\n"
-        code.insert(node.getData()[0] + offset_lines, loop_directives[0 + node.getLevel() - 1] + insert_string)
+        code.insert(node.getData()[0] + offset_lines, loop_directives[node.getLevel() - 1] + insert_string)
         offset_lines += 1
 
     for child in node.getChildren():
         offset_lines = insertDecorations(code, child, offset_lines)
 
     if( node.getData()[0] != None ):
-        code.insert(node.getData()[1] + offset_lines + 1, end_loop_directives[0 + node.getLevel() > 1] + '\n')
+        code.insert(node.getData()[1] + offset_lines + 1, end_loop_directives[node.getLevel() > 1] + '\n')
         offset_lines += 1
 
     return offset_lines
