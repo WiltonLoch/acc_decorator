@@ -3,20 +3,20 @@ from interval_tree import IntervalTree
 
 def insertDecorations(code, node, offset_lines = 0):
     insert_string = "\n"
-    if ( node.get_data()[0] != None ):
-        if ( node.get_level() == 1 ):
-            if ( len( node.get_children()) == 0 ):
+    if ( node.getData()[0] != None ):
+        if ( node.getLevel() == 1 ):
+            if ( len( node.getChildren()) == 0 ):
                 insert_string = " VECTOR PRIVATE() IF(.false.)\n"
             else:
                 insert_string = " PRIVATE() IF(.false.)\n"
-        code.insert(node.get_data()[0] + offset_lines, loop_directives[0 + node.get_level() - 1] + insert_string)
+        code.insert(node.getData()[0] + offset_lines, loop_directives[0 + node.getLevel() - 1] + insert_string)
         offset_lines += 1
 
-    for child in node.get_children():
+    for child in node.getChildren():
         offset_lines = insertDecorations(code, child, offset_lines)
 
-    if( node.get_data()[0] != None ):
-        code.insert(node.get_data()[1] + offset_lines + 1, end_loop_directives[0 + node.get_level() > 1] + '\n')
+    if( node.getData()[0] != None ):
+        code.insert(node.getData()[1] + offset_lines + 1, end_loop_directives[0 + node.getLevel() > 1] + '\n')
         offset_lines += 1
 
     return offset_lines
@@ -33,12 +33,12 @@ current_tree = root
 for i in range(0, len(code)):
     line = code[i]
     if( re.search("^ *do .*", line) ):
-        new_tree = IntervalTree(current_tree, i, -1, current_tree.get_level() + 1)
-        current_tree.add_child(new_tree)
+        new_tree = IntervalTree(current_tree, i, -1, current_tree.getLevel() + 1)
+        current_tree.addChild(new_tree)
         current_tree = new_tree
     elif( re.search(".*end.*do.*", line) ):
-        current_tree.set_end(i)
-        current_tree = current_tree.get_parent()
+        current_tree.setIntervalEnd(i)
+        current_tree = current_tree.getParent()
 
 insertDecorations(code, root)
 

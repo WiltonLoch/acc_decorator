@@ -6,28 +6,28 @@ class IntervalTree:
         self.parent = parent
         self.level = level
 
-    def set_start(self, start):
+    def setIntervalStart(self, start):
         self.start = start
 
-    def set_end(self, end):
+    def setIntervalEnd(self, end):
         self.end = end
 
-    def get_data(self):
+    def getData(self):
         return [self.start, self.end]
 
-    def get_level(self):
+    def getLevel(self):
         return self.level
 
-    def add_child(self, Node):
+    def addChild(self, Node):
         self.children.append(Node)
 
-    def get_child(self, index):
+    def getChild(self, index):
         return self.children[index]
 
-    def get_children(self):
+    def getChildren(self):
         return self.children
 
-    def get_parent(self):
+    def getParent(self):
         return self.parent
 
 def traversePreOrder(node):
