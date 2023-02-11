@@ -32,11 +32,11 @@ current_tree = root
 
 for i in range(0, len(code)):
     line = code[i]
-    if( re.search("^ *do .*", line) ):
+    if( re.search("^ *[d,D][o,O] .*", line) ):
         new_tree = IntervalTree(current_tree, i, -1, current_tree.getLevel() + 1)
         current_tree.addChild(new_tree)
         current_tree = new_tree
-    elif( re.search(".*end.*do.*", line) ):
+    elif( re.search("^ *[e,E][n,N][d,D] *[d,D][o,O] *", line) ):
         current_tree.setIntervalEnd(i)
         current_tree = current_tree.getParent()
 
