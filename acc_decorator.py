@@ -21,6 +21,22 @@ def insertDecorations(code, node, offset_lines = 0):
 
     return offset_lines
 
+def printOptions(loop, offset_lines):
+    print( "What should I do with the following loop:\n")
+
+    for line in range(loop.getData()[0] + offset_lines, loop.getData()[1] + offset_lines + 1):
+        print("\t" + str(line) + ":" + code[line][:-1])
+
+    print( "\na -> Add decorations" )
+    print( "A -> Add decorations to this and all following loops (Not yet implemented -- Same as skip)" )
+    print( "s -> Skip loop" )
+    print( "S -> Skip this and all following loop (Not yet implemented -- Same as skip)" )
+    valid_actions = ['a', 's', 'A', 'S']
+    if len(loop.getChildren()) > 0:
+        print( "i -> Ignore outer loop (Not yet implemented -- Same as skip)" )
+        valid_actions.append('i')
+    return valid_actions
+
 with open("input_code.F90", "r") as input_file:
     code = input_file.readlines()
 
@@ -40,7 +56,26 @@ for i in range(0, len(code)):
         current_tree.setIntervalEnd(i)
         current_tree = current_tree.getParent()
 
-insertDecorations(code, root)
+offset_lines = 0
+output_file = open("output_code.F90", "w")
+output_file.writelines(code)
+output_file.seek(0)
 
-with open("output_code.F90", "w") as output_file:
-    output_file.writelines(code)
+for loop in root.getChildren():
+    valid_actions = printOptions(loop, offset_lines)
+    action = input()
+
+    while action not in valid_actions:
+        print("Action not recognized!")
+        printOptions(loop, offset_lines)
+        action = input()
+
+    if action == 'a':
+        offset_lines = insertDecorations(code, loop, offset_lines)
+        print( "\nGenerated decorations for loop " + str(loop.getData()) + "\n")
+        output_file.writelines(code)
+        output_file.seek(0)
+    elif action == 's':
+        continue
+
+output_file.close()
