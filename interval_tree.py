@@ -33,9 +33,15 @@ class IntervalTree:
     def getParent(self):
         return self.parent
 
-def traversePreOrder(node):
-    print(node.get_data())
-    for child in node.get_children():
-        for level in range(0, child.get_level()):
+    def traversePreOrder(self):
+        for level in range(0, self.getLevel()):
             print("    ", end = '')
-        traversePreOrder(child)
+        print(self.getData())
+        for child in self.getChildren():
+            child.traversePreOrder()
+
+    def getNodeNumber(self):
+        total_descendants = self.getChildrenNumber()
+        for child in self.getChildren():
+            total_descendants += child.getNodeNumber()
+        return total_descendants
