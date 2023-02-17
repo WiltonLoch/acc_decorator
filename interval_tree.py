@@ -27,6 +27,9 @@ class IntervalTree:
     def getChildren(self):
         return self.children
 
+    def getChildrenNumber(self):
+        return len(self.children)
+
     def getParent(self):
         return self.parent
 
