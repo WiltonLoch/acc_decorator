@@ -61,6 +61,11 @@ output_file = open("output_code.F90", "w")
 output_file.writelines(code)
 output_file.seek(0)
 
+print("Found the following " + str(root.getNodeNumber()) + " loops in the input file:\n")
+for child in root.getChildren():
+    child.traversePreOrder()
+print()
+
 for loop in root.getChildren():
     valid_actions = printOptions(loop, offset_lines)
     action = input()
